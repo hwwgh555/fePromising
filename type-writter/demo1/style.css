@@ -1,0 +1,51 @@
+html, body {
+  height: 100%;
+}
+body {
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #222;
+  color: #eee;
+}
+
+.line {
+  width: 674px;
+  border-right: 2px solid #eee;
+  font-size: 28px;
+  text-align: center;
+  /* white-space 空白，及换行的处理
+    https://segmentfault.com/a/1190000020943199
+    normal: 多个空格、回车压缩为一个空格展示(不保留)，文字超出元素宽换行（换行）
+   */
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* steps实现帧效果 */
+/* Q: 多个动画时，如何组合？*/
+.animation {
+  animation: grow 4s steps(44) 1s normal both,
+    blink 500ms steps(44) infinite normal;
+}
+
+/* 长度变化 */
+@keyframes grow {
+  from {
+    width: 0;
+  }
+  to {
+    width: 500px; /* 这里需要根据文字长度进行调整 */
+  }
+}
+
+/* 光标变化 */
+@keyframes blink {
+  from {
+    border-right-color: #eee;
+  }
+  to {
+    border-right-color: transparent;
+  }
+}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>fixed</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    /* UI库是如何初始化，默认元素样式的？ */
+    :root {
+      --footer-height: 50px;
+      text-align: center;
+    }
+    .main {
+      padding-bottom: var(--footer-height);
+      overflow-y: auto;
+    }
+    .footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      height: var(--footer-height);
+      line-height: var(--footer-height);
+      background-color: pink;
+    }
+  </style>
+</head>
+<body>
+  <div class="main"></div>
+	<div class="footer">这是固定在底部的按钮</div>
+  <script src="index.js"></script>
+</body>
+</html>

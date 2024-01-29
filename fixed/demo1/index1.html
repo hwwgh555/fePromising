@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>fixed</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    :root {
+      --footer-height: 50px;
+      text-align: center;
+    }
+    .main {
+      /* padding-bottom: var(--footer-height); */
+      overflow-y: auto;
+    }
+    .footer {
+      height: var(--footer-height);
+    }
+    .footer-content {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      height: var(--footer-height);
+      line-height: var(--footer-height);
+      background-color: pink;
+    }
+  </style>
+</head>
+<body>
+  <div class="main"></div>
+  <!-- position: fixed；特性1：不占据正常布局流的空间，与position:absolute;类似  -->
+  <!-- 这里多加了一层 footer，纯粹作为空间占用的元素 -->
+  <!--
+    优势：1. footer作为组件使用时，父级不需要设置，padding-bottom: footer-height，
+      即省去了因为使用该组件，还得专门自己添加一个样式处理footer组件fixe带来的遮挡问题
+  -->
+	<div class="footer">
+    <div class="footer-content"> 这是固定在底部的按钮 </div>
+  </div>
+  <script src="index.js"></script>
+</body>
+</html>

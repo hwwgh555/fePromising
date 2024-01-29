@@ -40,5 +40,16 @@ div.footer-content 为原来position:fixed；
 
 div.footer这样就为div.footer-content占据了空间，这样内容元素div.class就不再需要因此使用div.footer预留空间了
 
+此外，div.footer也可以写成（不一定必须要是父子级形式）
+```
+  <div class="footer">
+    <div class="space-for-footer"></div>
+    <div class="footer-content">footer</div>
+  </div>
+```
+div.space-for-footer只是作为一个空元素，样式的高度调为footer高度，仅仅提供position:fixed;需要的空间
+
+
+
 
 

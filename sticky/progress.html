@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>粘性进度条</title>
+  <style>
+    body {
+      background-color: aquamarine;
+    }
+    .wrapper {
+      width: 500px;
+      height: 500px;
+      margin: 0 auto;
+      overflow: auto;
+    }
+    .progress {
+      position: sticky;
+      top: 0;
+      height: 10px;
+      width: 50px;
+      background-color: #36D;
+      --width: 50px;
+    }
+    .progress:nth-of-type(2) {
+      transform: translateX(var(--width));
+    }
+    .progress:nth-of-type(3) {
+      transform: translateX(calc(2 * var(--width)));
+    }
+    .progress:nth-of-type(4) {
+      transform: translateX(calc(3 * var(--width)));
+    }
+    .progress:nth-of-type(5) {
+      transform: translateX(calc(4 * var(--width)));
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <article class="article">
+      <h1>Sticky Progress</h1>
+      <div class="progress"></div>
+      <section>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, optio iusto sit molestiae totam laborum ipsa nam maiores consequuntur autem! Natus aperiam aliquam quod minima! Totam cupiditate necessitatibus voluptatibus amet?</section>
+      <section>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, optio iusto sit molestiae totam laborum ipsa nam maiores consequuntur autem! Natus aperiam aliquam quod minima! Totam cupiditate necessitatibus voluptatibus amet?</section>
+      <section>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, optio iusto sit molestiae totam laborum ipsa nam maiores consequuntur autem! Natus aperiam aliquam quod minima! Totam cupiditate necessitatibus voluptatibus amet?</section>
+      <section>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, optio iusto sit molestiae totam laborum ipsa nam maiores consequuntur autem! Natus aperiam aliquam quod minima! Totam cupiditate necessitatibus voluptatibus amet?</section>
+      <div class="progress"></div>
+      <section>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, optio iusto sit molestiae totam laborum ipsa nam maiores consequuntur autem! Natus aperiam aliquam quod minima! Totam cupiditate necessitatibus voluptatibus amet?</section>
+      <section>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, optio iusto sit molestiae totam laborum ipsa nam maiores consequuntur autem! Natus aperiam aliquam quod minima! Totam cupiditate necessitatibus voluptatibus amet?</section>
+      <section>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, optio iusto sit molestiae totam laborum ipsa nam maiores consequuntur autem! Natus aperiam aliquam quod minima! Totam cupiditate necessitatibus voluptatibus amet?</section>
+      <section>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, optio iusto sit molestiae totam laborum ipsa nam maiores consequuntur autem! Natus aperiam aliquam quod minima! Totam cupiditate necessitatibus voluptatibus amet?</section>
+      <div class="progress"></div>
+      <section>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, optio iusto sit molestiae totam laborum ipsa nam maiores consequuntur autem! Natus aperiam aliquam quod minima! Totam cupiditate necessitatibus voluptatibus amet?</section>
+      <section>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, optio iusto sit molestiae totam laborum ipsa nam maiores consequuntur autem! Natus aperiam aliquam quod minima! Totam cupiditate necessitatibus voluptatibus amet?</section>
+      <section>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, optio iusto sit molestiae totam laborum ipsa nam maiores consequuntur autem! Natus aperiam aliquam quod minima! Totam cupiditate necessitatibus voluptatibus amet?</section>
+      <section>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, optio iusto sit molestiae totam laborum ipsa nam maiores consequuntur autem! Natus aperiam aliquam quod minima! Totam cupiditate necessitatibus voluptatibus amet?</section>
+      <div class="progress"></div>
+      <section>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, optio iusto sit molestiae totam laborum ipsa nam maiores consequuntur autem! Natus aperiam aliquam quod minima! Totam cupiditate necessitatibus voluptatibus amet?</section>
+      <section>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, optio iusto sit molestiae totam laborum ipsa nam maiores consequuntur autem! Natus aperiam aliquam quod minima! Totam cupiditate necessitatibus voluptatibus amet?</section>
+      <section>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, optio iusto sit molestiae totam laborum ipsa nam maiores consequuntur autem! Natus aperiam aliquam quod minima! Totam cupiditate necessitatibus voluptatibus amet?</section>
+      <section>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, optio iusto sit molestiae totam laborum ipsa nam maiores consequuntur autem! Natus aperiam aliquam quod minima! Totam cupiditate necessitatibus voluptatibus amet?</section>
+      <div class="progress"></div>
+      <section>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, optio iusto sit molestiae totam laborum ipsa nam maiores consequuntur autem! Natus aperiam aliquam quod minima! Totam cupiditate necessitatibus voluptatibus amet?</section>
+      <section>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, optio iusto sit molestiae totam laborum ipsa nam maiores consequuntur autem! Natus aperiam aliquam quod minima! Totam cupiditate necessitatibus voluptatibus amet?</section>
+      <section>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, optio iusto sit molestiae totam laborum ipsa nam maiores consequuntur autem! Natus aperiam aliquam quod minima! Totam cupiditate necessitatibus voluptatibus amet?</section>
+      <section>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, optio iusto sit molestiae totam laborum ipsa nam maiores consequuntur autem! Natus aperiam aliquam quod minima! Totam cupiditate necessitatibus voluptatibus amet?</section>
+      <section>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, optio iusto sit molestiae totam laborum ipsa nam maiores consequuntur autem! Natus aperiam aliquam quod minima! Totam cupiditate necessitatibus voluptatibus amet?</section>
+    </article>
+  </div>
+  <!-- 缺陷：如果内容不构长，会导致不会贴合到最上方-->
+</body>
+</html>

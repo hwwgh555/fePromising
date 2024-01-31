@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>侧边栏sticky</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: antiquewhite;
+    }
+    .scroll {
+      margin: 0 auto;
+      margin-top: 50px;
+      height: 500px;
+      max-width: 500px;
+      overflow: auto;
+      padding: 0 10px;
+      background-color: #fff;
+    }
+    .scroll::before, .scroll:after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+    .content {
+      float: left;
+      width: 280px;
+    }
+   .sidebar {
+    position: sticky;
+    top: 10px;
+    float: right;
+    width: 150px;
+    height: 200px;
+    background-color: black;
+    color: white;
+    padding: 10px;
+    overflow: auto;
+   }
+  </style>
+</head>
+<body>
+  <article class="scroll">
+    <div class="content">
+      <h1>Scroll Down</h1>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, ea. Ex deserunt, animi omnis earum delectus ea, illum expedita perferendis natus quisquam quos maiores autem, deleniti iure beatae esse fugit.
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, ea. Ex deserunt, animi omnis earum delectus ea, illum expedita perferendis natus quisquam quos maiores autem, deleniti iure beatae esse fugit.
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, ea. Ex deserunt, animi omnis earum delectus ea, illum expedita perferendis natus quisquam quos maiores autem, deleniti iure beatae esse fugit.
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, ea. Ex deserunt, animi omnis earum delectus ea, illum expedita perferendis natus quisquam quos maiores autem, deleniti iure beatae esse fugit.
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, ea. Ex deserunt, animi omnis earum delectus ea, illum expedita perferendis natus quisquam quos maiores autem, deleniti iure beatae esse fugit.
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, ea. Ex deserunt, animi omnis earum delectus ea, illum expedita perferendis natus quisquam quos maiores autem, deleniti iure beatae esse fugit.
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, ea. Ex deserunt, animi omnis earum delectus ea, illum expedita perferendis natus quisquam quos maiores autem, deleniti iure beatae esse fugit.
+      </p>
+    </div>
+    <aside class="sidebar">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis, nulla
+    </aside>
+  </article>
+</body>
+</html>

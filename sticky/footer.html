@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>页脚固定sticky</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+   .main-container{
+    margin: 0 auto;
+    margin-top: 40px;
+    max-width: 800px;
+    height: 500px;
+    overflow: scroll;
+   }
+   .main-header {
+    /* position: sticky; */
+    top: 0;
+    height: 50px;
+    background-color: brown;
+   }
+   .main-content {
+    margin-top: 10px;
+    min-height: 600px;
+    background-color: darkgreen;
+   }
+   .main-footer {
+    position: sticky;
+    bottom: 0; /* 至少包含 bottom/top/left/right 值设置才会有效，否则效果类似relative */
+    margin-top: 10px;
+    height: 50px;
+    background-color: blueviolet;
+   }
+  </style>
+</head>
+<body>
+  <main class="main-container">
+    <header class="main-header">HEADER</header>
+    <div class="main-content">MAIN CONTENT</div>
+    <footer class="main-footer">FOOTER</footer>
+  </main>
+</body>
+</html>

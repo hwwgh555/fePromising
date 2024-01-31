@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>表格表头固定</title>
+  <style>
+    body{
+      background-color: antiquewhite;
+    }
+    .scroll {
+      margin: 0 auto;
+      height: 500px;
+      width: 320px;
+      overflow: auto;
+    }
+    table td, table th {
+      padding: 5px;
+    }
+    table tr:nth-child(even) {
+      background-color: beige;
+    }
+    table tr:nth-child(odd){
+      background-color: #EFEFEF;
+    }
+    tr.red > th {
+      background-color: brown;
+    }
+    tr.green > th {
+      background-color: green;
+    }
+    tr.green > .blue {
+      background-color: burlywood;
+    }
+    thead > tr{
+      position: sticky;
+      top: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr class="red">
+          <th>Name</th>
+          <th>Age</th>
+          <th>Job</th>
+          <th>Url</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>hww</td>
+          <td>28</td>
+          <td>FE</td>
+          <td>www.huangwenwu.com</td>
+        </tr>
+        <tr>
+          <td>hww1</td>
+          <td>28</td>
+          <td>FE</td>
+          <td>www.huangwenwu.com</td>
+        </tr>
+        <tr>
+          <td>hww2</td>
+          <td>28</td>
+          <td>FE</td>
+          <td>www.huangwenwu.com</td>
+        </tr>
+        <tr>
+          <td>hww3</td>
+          <td>28</td>
+          <td>FE</td>
+          <td>www.huangwenwu.com</td>
+        </tr>
+        <tr>
+          <td>hww4</td>
+          <td>28</td>
+          <td>FE</td>
+          <td>www.huangwenwu.com</td>
+        </tr>
+        <tr>
+          <td>hww5</td>
+          <td>28</td>
+          <td>FE</td>
+          <td>www.huangwenwu.com</td>
+        </tr>
+      </tbody>
+    </table>
+<table>
+      <thead>
+        <tr class="green">
+          <th>Name</th>
+          <th>Age</th>
+          <th>Job</th>
+          <th>Url</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>hww</td>
+          <td>28</td>
+          <td>FE</td>
+          <td>www.huangwenwu.com</td>
+        </tr>
+        <tr>
+          <td>hww1</td>
+          <td>28</td>
+          <td>FE</td>
+          <td>www.huangwenwu.com</td>
+        </tr>
+        <tr>
+          <td>hww2</td>
+          <td>28</td>
+          <td>FE</td>
+          <td>www.huangwenwu.com</td>
+        </tr>
+        <tr>
+          <td>hww3</td>
+          <td>28</td>
+          <td>FE</td>
+          <td>www.huangwenwu.com</td>
+        </tr>
+        <tr>
+          <td>hww4</td>
+          <td>28</td>
+          <td>FE</td>
+          <td>www.huangwenwu.com</td>
+        </tr>
+        <tr>
+          <td>hww5</td>
+          <td>28</td>
+          <td>FE</td>
+          <td>www.huangwenwu.com</td>
+        </tr>
+      </tbody>
+    </table>
+    <table>
+      <thead>
+        <tr class="blue">
+          <th>Name</th>
+          <th>Age</th>
+          <th>Job</th>
+          <th>Url</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>hww</td>
+          <td>28</td>
+          <td>FE</td>
+          <td>www.huangwenwu.com</td>
+        </tr>
+        <tr>
+          <td>hww1</td>
+          <td>28</td>
+          <td>FE</td>
+          <td>www.huangwenwu.com</td>
+        </tr>
+        <tr>
+          <td>hww2</td>
+          <td>28</td>
+          <td>FE</td>
+          <td>www.huangwenwu.com</td>
+        </tr>
+        <tr>
+          <td>hww3</td>
+          <td>28</td>
+          <td>FE</td>
+          <td>www.huangwenwu.com</td>
+        </tr>
+        <tr>
+          <td>hww4</td>
+          <td>28</td>
+          <td>FE</td>
+          <td>www.huangwenwu.com</td>
+        </tr>
+        <tr>
+          <td>hww5</td>
+          <td>28</td>
+          <td>FE</td>
+          <td>www.huangwenwu.com</td>
+        </tr>
+        <tr>
+          <td>hww5</td>
+          <td>28</td>
+          <td>FE</td>
+          <td>www.huangwenwu.com</td>
+        </tr>
+        <tr>
+          <td>hww5</td>
+          <td>28</td>
+          <td>FE</td>
+          <td>www.huangwenwu.com</td>
+        </tr>
+        <tr>
+          <td>hww5</td>
+          <td>28</td>
+          <td>FE</td>
+          <td>www.huangwenwu.com</td>
+        </tr>
+        <tr>
+          <td>hww5</td>
+          <td>28</td>
+          <td>FE</td>
+          <td>www.huangwenwu.com</td>
+        </tr>
+        <tr>
+          <td>hww5</td>
+          <td>28</td>
+          <td>FE</td>
+          <td>www.huangwenwu.com</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!--
+    对 table 元素的 th 或 tr 设置 position: sticky;
+    可以实现表格头部或某行固定，也可将多个表格合并到一起，
+    当滚动到当前表格是，固定头部自动变为当前表格的表头。
+  -->
+</body>
+</html>

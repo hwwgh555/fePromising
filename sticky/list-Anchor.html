@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>列表锚点sticky</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: antiquewhite;
+    }
+    .scroll {
+      margin: 0 auto;
+      margin-top: 50px;
+      height: 500px;
+      max-width: 500px;
+      overflow: auto;
+      background-color: #fff;
+    }
+    .part{
+
+    }
+    .part-header {
+      position: sticky;
+      top: 0;
+      height: 20px;
+      line-height: 1;
+      padding: 20px;
+      background-color: black;
+      color: #FFF;
+    }
+    .part-body {
+      padding: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="scroll">
+    <div class="part">
+      <div class="part-header">
+        A
+      </div>
+      <div class="part-body">
+        <ul>
+          <li>A1</li>
+          <li>A2</li>
+          <li>A3</li>
+        </ul>
+      </div>
+    </div>
+    <div class="part">
+      <div class="part-header">
+        B
+      </div>
+      <div class="part-body">
+        <ul>
+          <li>B1</li>
+          <li>B2</li>
+          <li>B3</li>
+        </ul>
+      </div>
+    </div>
+    <div class="part">
+      <div class="part-header">
+        C
+      </div>
+      <div class="part-body">
+        <ul>
+          <li>C1</li>
+          <li>C2</li>
+          <li>C3</li>
+        </ul>
+      </div>
+    </div>
+    <div class="part">
+      <div class="part-header">
+        D
+      </div>
+      <div class="part-body">
+        <ul>
+          <li>D1</li>
+          <li>D2</li>
+          <li>D3</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

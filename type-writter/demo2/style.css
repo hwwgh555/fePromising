@@ -22,7 +22,7 @@ body {
 .blink-animation {
   animation: blink 500ms infinite normal;
   display: inline-block;
-  width: 3px;
+  width: 3px; /* 具体块来实现 */
   height: 28px;
   background: #eee;
   position: relative;

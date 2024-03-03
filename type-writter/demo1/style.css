@@ -25,6 +25,10 @@ body {
 
 /* steps实现帧效果 */
 /* Q: 多个动画时，如何组合？*/
+/*
+* grow 显示区域变长；
+* blink 光标闪烁效果;  -- border实现
+*/
 .animation {
   animation: grow 4s steps(44) 1s normal both,
     blink 500ms steps(44) infinite normal;

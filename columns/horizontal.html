@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>多列/分组布局-实现横向分组布局</title>
+
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    .wrap {
+      display: flex;
+      width: 400px;
+      overflow: auto;
+      outline: 1px dashed #9747FF;
+    }
+
+    .item {
+      display: inline-flex;
+      width: 80px;
+      margin: 10px;
+      /* TODO: 下面语句，让其变成了 正文形 */
+      aspect-ratio: 1/1;
+      background: #FFE8A3;
+      color: #333;
+      font-size: 30px;
+      border-radius: 10px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .h200 {
+      height: 200px;
+    }
+
+    .col-400{
+      column-width: 400px; /* 将原来的纵向，变成了 横向排布*/
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="list h200 col-400">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+      <div class="item">4</div>
+      <div class="item">5</div>
+      <div class="item">6</div>
+      <div class="item">7</div>
+      <div class="item">8</div>
+      <div class="item">9</div>
+      <div class="item">10</div>
+      <div class="item">11</div>
+      <div class="item">12</div>
+      <div class="item">13</div>
+      <div class="item">14</div>
+    </div>
+  </div>
+</body>
+<!-- 扩展：
+结合scroll-snap，实现类似一屏一屏切换效果：
+* https://codepen.io/xboxyan/pen/RwvPLEM
+* https://developer.mozilla.org/zh-CN/docs/Web/CSS/scroll-snap-type
+-->
+</html>

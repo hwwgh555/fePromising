@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>勾选表单</title>
+    <script src="gsap.js"></script>
+    <style>
+        * {
+            font-size: 2vmin; /* vw、vh的值大小中较小 => 竖屏 或 横屏下，字体大小保持一致 */
+            padding: 0;
+            margin: 0;
+        }
+
+        div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            align-items: center;
+            position: relative;
+            width: 100%;
+            padding-top: 10rem;
+            background-color: #171717;
+            overflow-x: hidden;
+        }
+
+        .row {
+            position: relative;
+            justify-content: space-between;
+            width: 50rem;
+            margin-bottom: 10rem;
+        }
+
+        .row::after {
+            content: attr(data_text); /* 直接使用 html 元素上的值 */
+            position: absolute;
+            left: 0;
+            top: -3.2rem;
+            font-family: sans-serif;
+            font-size: 1.8rem;
+            color: #f7f7f7;
+            text-transform: uppercase;
+            transition: 0.3s ease;
+        }
+
+        .row:hover::after {
+            color: #17f700;
+        }
+
+        .row_input {
+            box-sizing: border-box;
+            width: 80%;
+            height: 4rem;
+            border-radius: 5rem;
+            background-color: #171717;
+            border: #f7f7f7 0.2rem solid;
+            outline: none;
+            padding: 0 2rem;
+            font-family: sans-serif;
+            font-size: 1.5rem;
+            color: #f7f7f7;
+            transition: 0.3s ease;
+            cursor: pointer;
+        }
+
+        .row_input:focus,
+        .ctr_textarea:focus {
+            border: #17f700 0.2rem solid;
+        }
+
+        .row_selectbox {
+            position: relative;
+            width: 5rem;
+            height: 5rem;
+            fill: none;
+        }
+
+        .row_selectbox path:nth-child(1) {
+            stroke: #f7f7f7; /* stroke -- 对于svg的设置，svg与css可以产生哪些关联？TODO: */
+            stroke-width: 6;
+        }
+
+        .row_selectbox path:nth-child(2) {
+            stroke: #17f700;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-width: 26;
+            stroke-dasharray: 150;
+            stroke-dashoffset: 150;
+        }
+
+        .row_selectbox_finish path:nth-child(2) {
+            stroke-dashoffset: 0;
+            transition: 0.5s ease;
+        }
+
+        .hand {
+            position: absolute;
+            pointer-events: none;
+            transform-origin: left center;
+        }
+
+        .hand img {
+            position: relative;
+            height: 100%;
+        }
+
+        @media screen and (max-aspect-ratio: 1.2/1) {
+            .row {
+                width: 40rem;
+                margin-bottom: 6rem;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="row" data_text="your name">
+        <input class="row_input" if_finish="0" onfocus="table.focus(this)"
+               onblur="table.blur(this)" />
+        <svg class="row_selectbox" width="125" height="92" viewBox="0 0 125 92">
+            <path d="M19,21H85V87H19V21Z" />
+            <path d="M14,42L40,78l71-64" />
+        </svg>
+    </div>
+    <div class="row" data_text="your age">
+        <input class="row_input" if_finish="0" onfocus="table.focus(this)"
+               onblur="table.blur(this)" />
+        <svg class="row_selectbox" width="125" height="92" viewBox="0 0 125 92">
+            <path d="M19,21H85V87H19V21Z" />
+            <path d="M14,42L40,78l71-64" />
+        </svg>
+    </div>
+    <div class="row" data_text="your gender">
+        <input class="row_input" if_finish="0" onfocus="table.focus(this)"
+               onblur="table.blur(this)" />
+        <svg class="row_selectbox" width="125" height="92" viewBox="0 0 125 92">
+            <path d="M19,21H85V87H19V21Z" />
+            <path d="M14,42L40,78l71-64" />
+        </svg>
+    </div>
+    <div class="row" data_text="your emil">
+        <input class="row_input" if_finish="0" onfocus="table.focus(this)"
+               onblur="table.blur(this)" />
+        <svg class="row_selectbox" width="125" height="92" viewBox="0 0 125 92">
+            <path d="M19,21H85V87H19V21Z" />
+            <path d="M14,42L40,78l71-64" />
+        </svg>
+    </div>
+    <div class="hand">
+        <img src="hand.png">
+    </div>
+</body>
+<script>
+    const table = {
+        hand: document.querySelector(".hand"),
+        timeline: gsap.timeline(), /* gsap 时间轴，应用场景？ TODO: */
+        offset_distance: 0,
+        resize() {
+            let refer_rect = document.querySelector(".row_selectbox").getBoundingClientRect();
+            this.offset_distance = refer_rect.height / 3;
+            this.hand.style.height = `${refer_rect.height * 5}px`;
+            this.hand.style.left = `${refer_rect.left}px`;
+            this.hand.style.top = `${refer_rect.top - this.hand.offsetHeight / 2 + this.offset_distance + scrollY}px`;
+        },
+        focus(ele) {
+            let axis_y = ele.getBoundingClientRect().top;
+            this.timeline.add(
+                gsap.to(this.hand, {
+                    top: `${axis_y - this.hand.offsetHeight / 2 + this.offset_distance + scrollY}px`,
+                    duration: 0.4,
+                    ease: "linear",
+                })
+            );
+        },
+        blur(ele) {
+            let if_finish = parseInt(ele.getAttribute("if_finish"));
+            if (ele.value != '' && !if_finish) {
+                ele.setAttribute("if_finish", 1);
+                this.input_finish_animate(ele);
+            };
+            if (ele.value == '' && if_finish) {
+                ele.setAttribute("if_finish", 0);
+                this.input_unfinish_animate(ele);
+            };
+        },
+        input_finish_animate(ele) {
+            let svg = ele.nextElementSibling;
+            this.timeline.add(
+                gsap.timeline()
+                    .to(this.hand, {
+                        rotate: '5deg',
+                        x: "3%",
+                        y: "7%",
+                        duration: 0.2,
+                        ease: "linear",
+                        onStart: () => {
+                            svg.classList.add("row_selectbox_finish");
+                        }
+                    })
+                    .to(this.hand, {
+                        rotate: '-2deg',
+                        x: "9%",
+                        y: "-6%",
+                        duration: 0.2,
+                        ease: "linear",
+                    })
+                    .to(this.hand, {
+                        rotate: 0,
+                        x: 0,
+                        y: 0,
+                        duration: 0.3,
+                        ease: "linear",
+                    })
+            );
+        },
+        input_unfinish_animate(ele) {
+            let svg = ele.nextElementSibling;
+            this.timeline.add(
+                gsap.timeline()
+                    .to(this.hand, {
+                        x: "-25%",
+                        y: "10%",
+                        duration: 0.3,
+                        ease: "linear",
+                    })
+                    .to(this.hand, {
+                        x: 0,
+                        y: 0,
+                        duration: 0.2,
+                        ease: "linear",
+                        onStart: () => {
+                            svg.classList.remove("row_selectbox_finish");
+                        }
+                    })
+            );
+        },
+    }
+    window.addEventListener("load", () => {
+        table.resize();
+    });
+    window.addEventListener("resize", () => {
+        table.resize();
+    });
+
+/* 来源：
+ JIEJOE produce
+ b站主页：https://space.bilibili.com/3546390319860710
+*/
+</script>
+</html>

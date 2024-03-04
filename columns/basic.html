@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>多列/分组布局</title>
+  <style>
+    p {
+      width: 500px;
+      background-color: antiquewhite;
+    }
+    .cols {
+      columns: 3; /* 简写属性：column-width与column-count的联合，如 columns: 6rem auto;*/
+    }
+    .col-gap {
+      column-gap: 0px; /* 存在默认 间距，且不为0，调小后，可能列/分组数会变多 */
+    }
+    .col-rule { /* 列的分隔线 */
+      column-rule: 1px solid red;
+    }
+  </style>
+</head>
+
+<body>
+  <p class="cols col-gap col-rule">欢迎关注文武的编程之路，关注web开发，一起成长，一起变得更强。更多内容，请访问浏览器访问地址www.huangwenw.com</p>
+</body>
+<!--
+  js实现逻辑： 需要内容先分组
+-->
+<!--
+优势：
+相对于传统的 JS实现来说，有哪些好处呢？
+
+* 少了一层嵌套容器，业务逻辑会更加干净
+* 自适应强，可以根据需求选择固定列数或者固定宽度，JS往往只能根据数量去分组
+  * 不会报错，想想看，JS中的数组经常会出现xxx.slice is not function这样的错误，轻则警告，总则整个页面白屏
+* 布局足够灵活，想横向滚动就横向滚动，想纵向滚动就纵向滚动，而JS方式往往还需要改变数组形态
+
+columns布局核心知识点：
+
+* columns布局，又称“多列”布局（或者“分栏”布局），可以将默认的文本流轻易分成多栏，非常类似以前的报刊读物排版
+* column可以通过宽度(column-width)去自动分割，或者通过指定数量(column-count)将布局分成多少栏
+* column-gap可以设置分栏之间的空隙，默认是有间隔的
+* column-rule可以设置分隔线，这种分割线是不占据空间的
+
+缺点：columns布局使用场景比较有限，但是几乎无法被替代
+
+参考：https://zhuanlan.zhihu.com/p/674756987
+ -->
+</html>

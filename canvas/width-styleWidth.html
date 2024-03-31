@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <canvas id="diagonal1" style="border:1px solid;" width="100px" height="100px"></canvas>
+  <canvas id="diagonal2" style="border:1px solid;width:200px;height:200px;" width="100px" height="100px"></canvas>
+  <canvas id="diagonal3" style="border:1px solid;width:200px;height:200px;"></canvas>
+  <canvas id="diagonal4" style="border:1px solid"></canvas>
+  <canvas id="diagonal5" style="border:1px solid;width:75px;height:75px;" width="200px" height="200px"></canvas>
+
+  <script>
+    function drawDiagonal(id) {
+      var canvas = document.getElementById(id);
+      var context = canvas.getContext("2d");
+      context.beginPath();
+      context.moveTo(0, 0);
+      context.lineTo(100, 100);
+      context.stroke();
+    }
+
+    window.onload = function () {
+      drawDiagonal("diagonal1");
+      drawDiagonal("diagonal2");
+      drawDiagonal("diagonal3");
+      drawDiagonal("diagonal4");
+      drawDiagonal("diagonal5");
+    }
+
+    var canvas = document.querySelector('#diagonal4');
+    var context = canvas.getContext('2d');
+
+    context.scale(0.5, 0.5);
+  </script>
+</body>
+
+</html>

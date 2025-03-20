@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>表格单元格合并及划选</title>
+		<link rel="stylesheet" href="css/index.css" />
+	</head>
+	<body>
+    <!-- 遇到问题： -->
+    <!-- 问题1
+      * 如果contenteditable="true" 设置在td上，td之间鼠标按住时，无法划选相邻的ts文字
+      * 可能原因：contenteditable="true"，此时鼠标位于td输入框内。
+      -->
+    <!-- 问题2
+      * 通过问题1的方式，确实可以解决划分问题，但是划选时，鼠标向下一行移动时，结果会出现整行选中，而不是期的“矩形选框”
+      * 因此：通过window.getSelection()获取选中的内容，然后提取内容，是不可行的
+      -->
+      <!--
+        新解决方案：通过鼠标划动的轨迹来实现选中区展示，以及信息提取
+      -->
+		<div class="container">
+			<table>
+				<thead>
+					<tr>
+						<th>课程名称</th>
+						<th>HTML</th>
+						<th>CSS</th>
+						<th>JavaScript</th>
+						<th>Vue</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><div contenteditable="true">学生1</div></td>
+						<td><div contenteditable="true">91</div></td>
+						<td>92</td>
+						<td>93</td>
+						<td>94</td>
+					</tr>
+					<tr>
+						<td><div contenteditable="true">学生2</div></td>
+						<td><div contenteditable="true">91</div></td>
+						<td>92</td>
+						<td>93</td>
+						<td>94</td>
+					</tr>
+					<tr>
+						<td>学生3</td>
+						<td>91</td>
+						<td>92</td>
+						<td>93</td>
+						<td>94</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>

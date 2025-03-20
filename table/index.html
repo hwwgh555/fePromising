@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/index.css" />
+    <title>动态表格</title>
+  </head>
+  <body>
+    <div class="container">
+      <table>
+        <thead>
+          <tr>
+            <th>课程名称</th>
+            <th>HTML</th>
+            <th>CSS</th>
+            <th>JavaScript</th>
+            <th>Vue</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <!--
+              * 如果contenteditable="true" 设置在td上，td之间鼠标按住时，无法划选相邻的ts文字
+              * 可能原因：contenteditable="true"，此时鼠标位于td输入框内。
+             -->
+            <td><div contenteditable="true">学生1</div></td>
+            <td><div contenteditable="true">91</div></td>
+            <td>92</td>
+            <td>93</td>
+            <td>94</td>
+          </tr>
+          <tr>
+            <td><div contenteditable="true">学生2</div></td>
+            <td><div contenteditable="true">91</div></td>
+            <td>92</td>
+            <td>93</td>
+            <td>94</td>
+          </tr>
+          <tr>
+            <td>学生3</td>
+            <td>91</td>
+            <td>92</td>
+            <td>93</td>
+            <td>94</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        let isMouseDown = false;
+        document.addEventListener("mousedown", () => {
+          isMouseDown = true;
+        });
+        document.addEventListener("mouseup", () => {
+          debugger
+          console.log(document.activeElement);
+          return
+          if (isMouseDown) {
+            isMouseDown = true;
+            const selection = window.getSelection();
+            debugger;
+            const selectedText = selection.toString();
+
+            if (selectedText.length > 0) {
+              // 用户选择了文本，弹出对话框
+              alert("你选中了文本: " + selectedText);
+            }
+          }
+        });
+        // document.addEventListener("selectionchange", () => {
+        //   const selection = window.getSelection();
+        //   const selectedText = selection.toString();
+
+        //   if (selectedText.length > 0) {
+        //     // 用户选择了文本，弹出对话框
+
+        //     // 如果你只想在第一次选择时弹出对话框，可以移除事件监听器
+        //     // document.removeEventListener('selectionchange', arguments.callee);
+        //   }
+        // });
+      });
+    </script>
+  </body>
+</html>

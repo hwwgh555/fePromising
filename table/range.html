@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>range api</title>
+  </head>
+  <body>
+    <p id="text">文本</p>
+    <div>xxx yy</div>
+    <div contenteditable="true" id="textEditable">文本Editable</div>
+
+    <button onclick="addRange()">添加range</button>
+    <button onclick="collapse()">collapse</button>
+    <button onclick="collapseToEnd()">collapseToEnd</button>
+    <button onclick="containsNode()">选中区中是否包含节点</button>
+    <button onclick="deleteFromDocument()">删除选区内容</button>
+    <button onclick="extend()">extend</button>
+    <button onclick="getRangeAt()">getRangeAt</button>
+    <button onclick="modify()">modify</button>
+    <script>
+      function addRange() {
+        // console.log('为什么只是第一次点击选区才会生效呢？')
+        //添加一个选区
+        var text = document.querySelector("#text");
+        var selObj = window.getSelection();
+        // 如果不清除，后续都无效。可能原因：
+        /*
+        问题的根源在于，当你已经有一个选区存在，并且再次尝试添加相同的范围到这个选区时，浏览器可能不会更新这个选区，因为它已经是当前选区的一部分了。
+        */
+        selObj.removeAllRanges(); // 清除所有现有的选区
+
+        var rangeObj = document.createRange();
+        // 将指定节点包含在 Range 对象内。
+        rangeObj.selectNode(text);
+
+        selObj.addRange(rangeObj);
+      }
+
+      function collapse() {
+        //收起选区到一个点，光标落在一个可编辑元素上
+        var text = document.querySelector("#textEditable");
+        window.getSelection().collapse(text, 0);
+      }
+
+      // 没有观察到作用 TODO:
+      // 类似接口 collapseToStart
+      function collapseToEnd() {
+        // 取消当前选区，并把光标定位在原选区的最末尾处。
+        var selObj = window.getSelection();
+        selObj.collapseToEnd();
+      }
+
+      function containsNode() {
+        // 判断指定的节点是否包含在 Selection 对象中（即是否被选中）。
+        var text = document.querySelector("#text");
+        var selObj = window.getSelection();
+
+        // 全包含，实验时，有点异常 TODO:
+        // var isContained = selObj.containsNode(text);
+        var isContained = selObj.containsNode(text, true);
+        console.log("isContained", isContained);
+      }
+
+      function deleteFromDocument() {
+        //从 DOM 中删除选中的文档片段。
+        var selObj = window.getSelection();
+        selObj.deleteFromDocument();
+      }
+
+      function extend() {
+        // 将选区扩展到指定的点。
+        // 移动选区的焦点（focus）到指定的点。选区的锚点（anchor）不会移动。选区将从锚点（anchor）开始到新的焦点（focus），不管方向。
+        var text = document.querySelector("#text");
+        var selObj = window.getSelection();
+        // node： 焦点（focus）会被移至此节点内。
+        selObj.extend(text);
+      }
+
+      function getRangeAt() {
+        // 获取选区中的指定范围。
+        var selObj = window.getSelection();
+        var rangeObj = selObj.getRangeAt(0);
+        console.log("rangeObj", rangeObj);
+      }
+
+      function modify() {
+        // 通过文本命令来更改当前选区或光标位置。
+        // 修改选区的属性。
+        var selection = window.getSelection();
+        // move 移动光标位置（可编辑元素很明显可以观察到光标移动）
+        // selObj.modify("move", "forward", "character");
+
+        // extend扩展选区
+        selection.modify("extend", "forward", "word");
+      }
+    </script>
+  </body>
+</html>

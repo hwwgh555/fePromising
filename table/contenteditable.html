@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>contenteditable</title>
+</head>
+<body>
+   <div id="editable" contenteditable="true">这是一个可编辑的文本。</div>
+   <button id="btn">获取可编辑元素的内容</button>
+  <script>
+    document.getElementById("btn").addEventListener("click", function() {
+      var editableDiv = document.getElementById("editable");
+      debugger
+      var content = editableDiv.innerHTML; // 获取可编辑元素的 HTML 内容
+      console.log(content);
+    })
+    var editableDiv = document.getElementById("editable");
+    var content = editableDiv.innerHTML; // 获取可编辑元素的 HTML 内容
+    console.log(content);
+
+    editableDiv.innerHTML = "<p>新的内容</p>"; // 设置可编辑元素的 HTML 内容
+  </script>
+</body>
+</html>

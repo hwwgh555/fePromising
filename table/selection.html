@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>selection左键停止后弹框</title>
+  </head>
+  <body>
+    <h1>h1标题</h1>
+    <div>内容开头<span>span</span>内容结尾</div>
+    <br />
+    有换行
+    <div>
+      div开始
+      <div>嵌套div</div>
+      div结束
+    </div>
+    <br/>
+
+    无换行
+    <div> div开始
+      <div>嵌套div</div>
+      div结束
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        let isMouseDown = false;
+        document.addEventListener("mousedown", () => {
+          isMouseDown = true;
+        });
+        document.addEventListener("mouseup", () => {
+          if (isMouseDown) {
+            isMouseDown = true;
+            const selection = window.getSelection();
+            console.log(
+              "selection::",
+              selection,
+              "anchorOffset",
+              selection.anchorOffset,
+              "focusOffset",
+              selection.focusOffset,
+            );
+            // const selectedText = selection.toString();
+
+            // if (selectedText.length > 0) {
+            //   // 用户选择了文本，弹出对话框
+            //   alert('你选中了文本: ' + selectedText);
+            // }
+          }
+        });
+        // document.addEventListener("selectionchange", () => {
+        //   const selection = window.getSelection();
+        //   const selectedText = selection.toString();
+
+        //   if (selectedText.length > 0) {
+        //     // 用户选择了文本，弹出对话框
+
+        //     // 如果你只想在第一次选择时弹出对话框，可以移除事件监听器
+        //     // document.removeEventListener('selectionchange', arguments.callee);
+        //   }
+        // });
+      });
+    </script>
+  </body>
+</html>

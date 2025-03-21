@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>静态轮播图</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      .wrapper {
+        background-color: #000000; /* 当屏幕超过图片大小时，背景色 */
+        display: flex; /*水平垂直居中*/
+        overflow: hidden;
+      }
+
+      .container {
+        height: 200px; /* 此时，img会自动适应容器高嘛工 */
+        margin: auto;
+      }
+      .ratio {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="container">
+        <img class="ratio" src="./image.png" alt="轮播图片1" />
+      </div>
+    </div>
+  </body>
+</html>

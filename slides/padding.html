@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>静态轮播图</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      /* 以下写法，div形成了css功能控制的分层 */
+      .wrapper {
+        background-color: #000000; /* 当屏幕超过图片大小时，背景色 */
+        height: 332px;
+        display: flex; /*水平垂直居中*/
+        /* 奇怪的点：
+          如果不设置display: flex; 则.swiper-container 的 margin: auto; 纵向是无效果的;
+          一旦设置了display: flex; 则margin: auto; 纵向是有效的  -- margin-xx: auto; 生效条件是什么？TODO:
+        */
+      }
+
+      .swiper-container {
+        width: 100%;
+        max-width: 1200px; /*最大宽度，可根据需要调整*/
+        margin: auto;
+      }
+
+      .ratio-box {
+        position: relative;
+        padding-top: 27.70%; /* 根据图片比例需要动态调整 height / width */
+      }
+
+      .swiper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .slide {
+        flex: 0 0 100%;
+        scroll-snap-align: start;
+        position: relative;
+      }
+
+      /* 图片样式 */
+      .slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* 裁剪填充容器 */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="swiper-container">
+        <div class="ratio-box">
+          <div class="swiper">
+          <div class="slides-container">
+            <div class="slide">
+              <img src="./image.png" alt="轮播图片1" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>静态轮播图</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      .swiper-container {
+        width: 100%;
+        max-width: 1200px; /* 最大宽度，可根据需要调整 */
+        margin: 0 auto;
+      }
+
+      .ratio-box {
+        position: relative;
+        padding-top: 56.25%; /* 16:9比例 */
+      }
+
+      .swiper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      /* 轮播图容器 */
+      .slides-container {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch; /* 提升触屏设备的滚动体验 */
+        scrollbar-width: none; /* 隐藏Firefox滚动条 */
+      }
+
+      /* 隐藏Chrome滚动条 */
+      .slides-container::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* 每个轮播项目 */
+      .slide {
+        flex: 0 0 100%;
+        scroll-snap-align: start;
+        position: relative;
+      }
+
+      /* 图片样式 */
+      .slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* 裁剪填充容器 */
+      }
+
+      /* 导航按钮 */
+      .nav-buttons {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+        gap: 10px;
+      }
+
+      .nav-buttons button {
+        padding: 8px 15px;
+        background-color: #f0f0f0;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .nav-buttons button:hover {
+        background-color: #ddd;
+      }
+
+      /* 指示器 */
+      .indicators {
+        display: flex;
+        justify-content: center;
+        margin-top: 15px;
+        gap: 8px;
+      }
+
+      .indicator {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: #ccc;
+        cursor: pointer;
+      }
+
+      .indicator.active {
+        background-color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="swiper-container">
+      <div class="ratio-box">
+        <div class="swiper">
+          <div class="slides-container" id="slideContainer">
+            <!-- 轮播项目 -->
+            <div class="slide">
+              <img src="./image.png" alt="轮播图片1" />
+            </div>
+            <div class="slide">
+              <img src="path/to/image2.jpg" alt="轮播图片2" />
+            </div>
+            <div class="slide">
+              <img src="path/to/image3.jpg" alt="轮播图片3" />
+            </div>
+            <div class="slide">
+              <img src="path/to/image4.jpg" alt="轮播图片4" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 导航按钮 -->
+      <div class="nav-buttons">
+        <button id="prevBtn">上一张</button>
+        <button id="nextBtn">下一张</button>
+      </div>
+
+      <!-- 指示器 -->
+      <div class="indicators" id="indicators">
+        <!-- 指示器将通过JavaScript动态生成 -->
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        return;
+        const slideContainer = document.getElementById("slideContainer");
+        const slides = slideContainer.querySelectorAll(".slide");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const indicatorsContainer = document.getElementById("indicators");
+
+        let currentIndex = 0;
+
+        // 创建指示器
+        slides.forEach((_, index) => {
+          const indicator = document.createElement("div");
+          indicator.classList.add("indicator");
+          if (index === 0) {
+            indicator.classList.add("active");
+          }
+          indicator.addEventListener("click", () => {
+            goToSlide(index);
+          });
+          indicatorsContainer.appendChild(indicator);
+        });
+
+        // 获取所有指示器
+        const indicators = indicatorsContainer.querySelectorAll(".indicator");
+
+        // 前往指定幻灯片
+        function goToSlide(index) {
+          currentIndex = index;
+          slideContainer.scrollTo({
+            left: slideContainer.clientWidth * index,
+            behavior: "smooth",
+          });
+
+          // 更新指示器状态
+          indicators.forEach((ind, i) => {
+            if (i === index) {
+              ind.classList.add("active");
+            } else {
+              ind.classList.remove("active");
+            }
+          });
+        }
+
+        // 上一张按钮
+        prevBtn.addEventListener("click", () => {
+          currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+          goToSlide(currentIndex);
+        });
+
+        // 下一张按钮
+        nextBtn.addEventListener("click", () => {
+          currentIndex = (currentIndex + 1) % slides.length;
+          goToSlide(currentIndex);
+        });
+
+        // 监听滚动事件，更新当前索引和指示器
+        slideContainer.addEventListener("scroll", () => {
+          const scrollPosition = slideContainer.scrollLeft;
+          const slideWidth = slideContainer.clientWidth;
+          const newIndex = Math.round(scrollPosition / slideWidth);
+
+          if (newIndex !== currentIndex) {
+            currentIndex = newIndex;
+
+            // 更新指示器状态
+            indicators.forEach((ind, i) => {
+              if (i === currentIndex) {
+                ind.classList.add("active");
+              } else {
+                ind.classList.remove("active");
+              }
+            });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

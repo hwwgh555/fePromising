@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SVG to Canvas Demo with Zoom - 画布大小不变，可以拖动</title>
+    <style>
+      .container {
+        display: flex;
+        gap: 20px;
+        margin: 20px;
+      }
+      .source-svg,
+      #targetCanvas {
+        border: 1px solid #ccc;
+      }
+      .controls {
+        margin: 20px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .zoom-value {
+        min-width: 60px;
+      }
+      #targetCanvas {
+        cursor: default; /* 默认光标 */
+      }
+      #targetCanvas.draggable {
+        cursor: grab; /* 当可拖动时显示抓手光标 */
+      }
+      #targetCanvas.dragging {
+        cursor: grabbing !important; /* 拖动时显示抓取状态光标 */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- 源SVG -->
+      <svg class="source-svg" width="200" height="200" id="sourceSvg">
+        <circle cx="100" cy="100" r="50" fill="blue" />
+        <rect x="75" y="75" width="50" height="50" fill="red" />
+        <path d="M100,60 L120,100 L80,100 Z" fill="yellow" />
+      </svg>
+
+      <!-- 目标Canvas -->
+      <canvas id="targetCanvas" width="200" height="200"></canvas>
+    </div>
+
+    <div class="controls">
+      <button onclick="zoomIn()">放大(+)</button>
+      <button onclick="zoomOut()">缩小(-)</button>
+      <span class="zoom-value" id="zoomValue">缩放: 100%</span>
+      <button onclick="resetZoom()">重置缩放</button>
+    </div>
+
+    <script>
+      // 全局变量
+      let scale = 1;
+      const ZOOM_STEP = 0.1;
+      const MIN_SCALE = 0.1;
+      const MAX_SCALE = 5;
+      const CANVAS_SIZE = 200; // 固定Canvas尺寸
+
+      // 缓存相关变量
+      let cachedImage = null;
+      let isImageLoading = false;
+      let pendingRender = false;
+
+      // 添加拖动相关的变量
+      let isDragging = false;
+      let isSpacePressed = false;
+      let startDragX = 0;
+      let startDragY = 0;
+      let offsetX = 0;
+      let offsetY = 0;
+      let lastOffsetX = 0;
+      let lastOffsetY = 0;
+
+      // 创建离屏Canvas用于双缓冲
+      const offscreenCanvas = document.createElement('canvas');
+      offscreenCanvas.width = CANVAS_SIZE;
+      offscreenCanvas.height = CANVAS_SIZE;
+      const offscreenCtx = offscreenCanvas.getContext('2d');
+
+      // 初始化SVG内容
+      const originalSvg = document.getElementById("sourceSvg");
+      const baseSvgContent = originalSvg.innerHTML;
+
+      // 缩放控制函数
+      function zoomIn() {
+        if (scale < MAX_SCALE) {
+          scale += ZOOM_STEP;
+          updateZoom();
+        }
+      }
+
+      function zoomOut() {
+        if (scale > MIN_SCALE) {
+          scale -= ZOOM_STEP;
+          updateZoom();
+        }
+      }
+
+      function resetZoom() {
+        scale = 1;
+        offsetX = 0;
+        offsetY = 0;
+        lastOffsetX = 0;
+        lastOffsetY = 0;
+        updateZoom();
+      }
+
+      function updateZoom() {
+        // 更新缩放值显示
+        document.getElementById("zoomValue").textContent = `缩放: ${Math.round(
+          scale * 100
+        )}%`;
+        
+        // 使用防抖进行渲染
+        if (!isImageLoading) {
+          renderSvgToCanvas();
+        } else {
+          pendingRender = true;
+        }
+      }
+
+      // 创建SVG内容的函数
+      function createSvgContent() {
+        return `
+          <svg width="${CANVAS_SIZE}" height="${CANVAS_SIZE}" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(${CANVAS_SIZE / 2 + offsetX} ${CANVAS_SIZE / 2 + offsetY}) 
+                        scale(${scale}) 
+                        translate(${-CANVAS_SIZE / 2} ${-CANVAS_SIZE / 2})">
+              ${baseSvgContent}
+            </g>
+          </svg>
+        `;
+      }
+
+      // 预加载图片
+      function loadImage(svgContent) {
+        return new Promise((resolve, reject) => {
+          const svgBlob = new Blob([svgContent], {
+            type: "image/svg+xml;charset=utf-8",
+          });
+          const url = URL.createObjectURL(svgBlob);
+          const img = new Image();
+          
+          img.onload = () => {
+            URL.revokeObjectURL(url);
+            resolve(img);
+          };
+          
+          img.onerror = () => {
+            URL.revokeObjectURL(url);
+            reject(new Error('Image loading failed'));
+          };
+          
+          img.src = url;
+        });
+      }
+
+      // 渲染到Canvas
+      async function renderSvgToCanvas() {
+        if (isImageLoading) {
+          pendingRender = true;
+          return;
+        }
+
+        isImageLoading = true;
+        const canvas = document.getElementById("targetCanvas");
+        const ctx = canvas.getContext("2d");
+
+        try {
+          // 创建新的SVG内容
+          const svgContent = createSvgContent();
+          
+          // 加载图片
+          const img = await loadImage(svgContent);
+          
+          // 先在离屏Canvas上绘制
+          offscreenCtx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+          offscreenCtx.drawImage(img, 0, 0, CANVAS_SIZE, CANVAS_SIZE);
+          
+          // 一次性将离屏Canvas的内容复制到显示Canvas
+          ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+          ctx.drawImage(offscreenCanvas, 0, 0);
+          
+          cachedImage = img;
+        } catch (error) {
+          console.error('渲染失败:', error);
+        } finally {
+          isImageLoading = false;
+          
+          // 如果在加载过程中有新的渲染请求，则执行渲染
+          if (pendingRender) {
+            pendingRender = false;
+            renderSvgToCanvas();
+          }
+        }
+      }
+
+      // 添加拖动相关的事件处理函数
+      function handleKeyDown(event) {
+        if (event.code === 'Space' && !isSpacePressed) {
+          event.preventDefault(); // 阻止页面滚动
+          isSpacePressed = true;
+          const canvas = document.getElementById('targetCanvas');
+          canvas.classList.add('draggable');
+        }
+      }
+
+      function handleKeyUp(event) {
+        if (event.code === 'Space') {
+          isSpacePressed = false;
+          isDragging = false;
+          const canvas = document.getElementById('targetCanvas');
+          canvas.classList.remove('draggable');
+          canvas.classList.remove('dragging');
+        }
+      }
+
+      function handleMouseDown(event) {
+        if (isSpacePressed) {
+          isDragging = true;
+          startDragX = event.clientX - lastOffsetX;
+          startDragY = event.clientY - lastOffsetY;
+          event.target.classList.add('dragging');
+        }
+      }
+
+      function handleMouseMove(event) {
+        if (isDragging && isSpacePressed) {
+          offsetX = event.clientX - startDragX;
+          offsetY = event.clientY - startDragY;
+          lastOffsetX = offsetX;
+          lastOffsetY = offsetY;
+          renderSvgToCanvas();
+        }
+      }
+
+      function handleMouseUp() {
+        if (isDragging) {
+          isDragging = false;
+          const canvas = document.getElementById('targetCanvas');
+          canvas.classList.remove('dragging');
+          lastOffsetX = offsetX;
+          lastOffsetY = offsetY;
+        }
+      }
+
+      // 添加事件监听器
+      document.addEventListener('keydown', handleKeyDown);
+      document.addEventListener('keyup', handleKeyUp);
+      const canvas = document.getElementById('targetCanvas');
+      canvas.addEventListener('mousedown', handleMouseDown);
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+
+      // 添加键盘快捷键支持
+      document.addEventListener("keydown", function (event) {
+        if (event.ctrlKey || event.metaKey) {
+          if (event.key === "=" || event.key === "+") {
+            event.preventDefault();
+            zoomIn();
+          } else if (event.key === "-") {
+            event.preventDefault();
+            zoomOut();
+          } else if (event.key === "0") {
+            event.preventDefault();
+            resetZoom();
+          }
+        }
+      });
+
+      // 添加防抖的鼠标滚轮缩放支持
+      let wheelTimeout;
+      document.getElementById("targetCanvas").addEventListener("wheel", function (event) {
+        event.preventDefault();
+        if (event.ctrlKey || event.metaKey) {
+          clearTimeout(wheelTimeout);
+          wheelTimeout = setTimeout(() => {
+            if (event.deltaY < 0) {
+              zoomIn();
+            } else {
+              zoomOut();
+            }
+          }, 10);
+        }
+      });
+
+      // 页面加载完成后执行初始渲染
+      window.onload = renderSvgToCanvas;
+    </script>
+  </body>
+</html>

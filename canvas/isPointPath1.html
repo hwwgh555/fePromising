@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>canvas-isPointInPath-鼠标响应</title>
+    <style>
+      #container {
+        border: 1px solid #000;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="container"></canvas>
+    <script>
+      // 效果：鼠标移动到 绘制的图形上面时，绘制的图形会变色（红色）
+      function init() {
+        var width = 800;
+        var height = 400;
+        var container = document.getElementById("container");
+        var ctx = container.getContext("2d");
+
+        var func = [line1, line2];
+        container.width = width;
+        container.height = height;
+
+        document
+          .getElementById("container")
+          .addEventListener("mousemove", render);
+
+        render({ clientX: -1, clientY: -1 });
+
+        function render(event) {
+          ctx.clearRect(0, 0, width, height);
+
+          for (var key in func) {
+            ctx.beginPath();
+            // ctx.fillStyle = func[key](event.clientX, event.clientY);
+            // ctx.fill();
+            ctx.strokeStyle = func[key](event.clientX, event.clientY);
+            ctx.stroke();
+          }
+        }
+
+        function line1(x, y) {
+          ctx.moveTo(0, 0);
+          ctx.lineTo(0, 100);
+          ctx.lineTo(100, 100);
+          ctx.lineTo(100, 0);
+          ctx.lineTo(0, 0);
+          return ctx.isPointInPath(x, y) ? "#f00" : "#000";
+        }
+
+        function line2(x, y) {
+          ctx.moveTo(400, 0);
+          ctx.lineTo(400, 200);
+          ctx.lineTo(200, 200);
+          ctx.lineTo(400, 0);
+          return ctx.isPointInPath(x, y) ? "#f00" : "#000";
+        }
+      }
+
+      init();
+    </script>
+  </body>
+</html>

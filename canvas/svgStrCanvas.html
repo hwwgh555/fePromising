@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SVG string to Canvas Demo</title>
+  <style>
+    .container {
+      display: flex;
+      gap: 20px;
+      margin: 20px;
+    }
+    .source-svg, .target-canvas {
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="source-svg">
+      <h3>源SVG图形：</h3>
+      <div id="svgContainer"></div>
+    </div>
+    <div class="target-canvas">
+      <h3>Canvas渲染结果：</h3>
+      <canvas id="canvas" width="300" height="300"></canvas>
+    </div>
+  </div>
+
+  <script>
+    // SVG字符串示例
+    const svgString = `
+      <svg width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+        <rect x="50" y="50" width="100" height="100" fill="#4CAF50" />
+        <circle cx="200" cy="100" r="50" fill="#2196F3" />
+        <path d="M150 200 L200 150 L250 200 Z" fill="#FFC107" />
+      </svg>
+    `;
+
+    // 显示原始SVG
+    document.getElementById('svgContainer').innerHTML = svgString;
+
+    // 将SVG渲染到Canvas
+    function renderSvgToCanvas(svgString, canvas) {
+      const ctx = canvas.getContext('2d');
+      
+      // 创建Blob对象
+      const blob = new Blob([svgString], { type: 'image/svg+xml' });
+      const url = URL.createObjectURL(blob);
+      
+      // 创建Image对象
+      const img = new Image();
+      
+      // 图片加载完成后绘制到Canvas
+      img.onload = function() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+        URL.revokeObjectURL(url); // 释放URL对象
+      };
+      
+      // 设置图片源
+      img.src = url;
+    }
+
+    // 创建一个更复杂的SVG示例函数
+    function createComplexSvg() {
+      return `
+        <svg width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+          <!-- 渐变定义 -->
+          <defs>
+            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#ff6b6b" />
+              <stop offset="100%" style="stop-color:#4ecdc4" />
+            </linearGradient>
+          </defs>
+          
+          <!-- 背景矩形 -->
+          <rect x="0" y="0" width="300" height="300" fill="#f8f9fa" />
+          
+          <!-- 使用渐变的圆形 -->
+          <circle cx="150" cy="150" r="80" fill="url(#gradient)" />
+          
+          <!-- 装饰性元素 -->
+          <circle cx="150" cy="150" r="60" 
+                  fill="none" 
+                  stroke="#fff" 
+                  stroke-width="2" 
+                  stroke-dasharray="10,5" />
+          
+          <!-- 添加一些小圆点 -->
+          <g fill="#333" opacity="0.5">
+            <circle cx="100" cy="100" r="5" />
+            <circle cx="200" cy="100" r="5" />
+            <circle cx="100" cy="200" r="5" />
+            <circle cx="200" cy="200" r="5" />
+          </g>
+        </svg>
+      `;
+    }
+
+    // 页面加载完成后执行渲染
+    window.onload = function() {
+      const canvas = document.getElementById('canvas');
+      const complexSvg = createComplexSvg();
+      
+      // 将复杂SVG显示在原始容器中
+      document.getElementById('svgContainer').innerHTML = complexSvg;
+      
+      // 渲染到Canvas
+      renderSvgToCanvas(complexSvg, canvas);
+    };
+  </script>
+</body>
+</html>

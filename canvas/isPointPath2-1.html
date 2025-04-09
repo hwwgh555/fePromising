@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>canvas-isPointInPath-鼠标响应-重叠2</title>
+    <style>
+      #container {
+        border: 1px solid #000;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="container"></canvas>
+    <script>
+      /* 效果：
+        1. 鼠标移动到 绘制的图形上面时，绘制的图形会变色（红色） -- 最后画的变色
+      */
+
+      function init() {
+        var width = 800;
+        var height = 400;
+        var container = document.getElementById("container");
+        var ctx = container.getContext("2d");
+
+        var geometry = [
+          [
+            [
+              [10, 10],
+              [10, 110],
+              [110, 110],
+              [10, 10],
+            ],
+            [
+              [110, 10],
+              [110, 110],
+              [210, 110],
+              [110, 10],
+            ],
+            [
+              [210, 10],
+              [210, 110],
+              [310, 110],
+              [210, 10],
+            ],
+          ],
+          [
+            [
+              [0, 50],
+              [0, 150],
+              [100, 150],
+              [0, 50],
+            ],
+            [
+              [100, 50],
+              [100, 150],
+              [200, 150],
+              [100, 50],
+            ],
+            [
+              [200, 50],
+              [200, 150],
+              [300, 150],
+              [200, 50],
+            ],
+          ],
+          [
+            [
+              [0, 100],
+              [0, 200],
+              [100, 200],
+              [0, 100],
+            ],
+            [
+              [100, 100],
+              [100, 200],
+              [200, 200],
+              [100, 100],
+            ],
+            [
+              [200, 100],
+              [200, 200],
+              [300, 200],
+              [200, 100],
+            ],
+          ],
+        ];
+
+        container.width = width;
+        container.height = height;
+
+        document
+          .getElementById("container")
+          .addEventListener("mousemove", render);
+
+        render({ clientX: -1, clientY: -1 });
+
+        function render(event) {
+          ctx.clearRect(0, 0, width, height);
+          // for (var n = 0; n < geometry.length; n++) {
+          //   ctx.beginPath();
+          //   ctx.strokeStyle = draw(event.clientX, event.clientY, geometry[n]);
+          //   ctx.stroke();
+          // }
+          // 获取 鼠标移动到 图形重合的部分时，包含重叠部分的图形会变色（红色）
+          var hover = [];
+          for (var n = 0; n < geometry.length; n++) {
+            ctx.beginPath();
+            ctx.strokeStyle = draw(event.clientX, event.clientY, geometry[n]);
+            if (ctx.strokeStyle == "#ff0000") {
+              hover.push(n);
+            }
+            ctx.stroke();
+          }
+          hover.reverse();
+          if (hover.length > 0) {
+            for (var n = 0; n < geometry.length; n++) {
+              ctx.beginPath();
+              draw(event.clientX, event.clientY, geometry[n]);
+              ctx.strokeStyle = n == hover[0] ? "#f00" : "#000";
+              ctx.stroke();
+            }
+          }
+        }
+        // 是不是看着很眼熟？没错，这就是浏览器冒泡机制。我们一步一步做到这里，原理一点儿都不复杂。TODO:
+
+        function draw(x, y, geo) {
+          for (var i = 0; i < geo.length; i++) {
+            var face = geo[i];
+            for (var p = 0; p < face.length; p++) {
+              if (p == 0) {
+                ctx.moveTo(face[p][0], face[p][1]);
+              } else {
+                ctx.lineTo(face[p][0], face[p][1]);
+              }
+            }
+          }
+          return ctx.isPointInPath(x, y) ? "#f00" : "#000";
+        }
+      }
+      init();
+    </script>
+  </body>
+</html>

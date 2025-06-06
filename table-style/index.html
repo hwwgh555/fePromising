@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Table样式 table-layout</title>
+</head>
+<body>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+  /* 固定布局的表格 */
+  .fixed-table {
+    table-layout: fixed;
+    width: 400px; /* 表格总宽度固定 */
+    border-collapse: collapse;
+  }
+  .fixed-table th, .fixed-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    overflow: hidden;   /* 内容超出时隐藏 */
+    text-overflow: ellipsis; /* 超出部分显示省略号 */
+  }
+  .fixed-table th:nth-child(1) { width: 100px; } /* 第一列固定宽度 */
+  .fixed-table th:nth-child(2) { width: 200px; } /* 第二列固定宽度 */
+
+  /* 自动布局的表格 */
+  .auto-table {
+    table-layout: auto;
+    width: 400px; /* 表格总宽度相同 */
+    border-collapse: collapse;
+  }
+  .auto-table th, .auto-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+  }
+</style>
+
+<!-- 固定布局表格 -->
+<table class="fixed-table">
+  <tr>
+    <th>短标题</th>
+    <th>中等标题</th>
+    <th>未指定宽度的长标题列</th>
+  </tr>
+  <tr>
+    <td>内容超出宽度时会隐藏</td>
+    <td>这一列内容非常非常非常非常长，但不会撑开表格</td>
+    <td>未指定宽度，按剩余空间分配</td>
+  </tr>
+</table>
+
+<br/>
+<hr/>
+<br/>
+
+<!-- 自动布局表格 -->
+<table class="auto-table">
+  <tr>
+    <th>短标题</th>
+    <th>中等标题</th>
+    <th>未指定宽度的长标题列</th>
+  </tr>
+  <tr>
+    <td>内容短</td>
+    <td>这一列内容非常非常非常非常长，会撑开表格</td>
+    <td>未指定宽度，按内容分配</td>
+  </tr>
+</table>
+<!--
+table样式的特点：
+1. 设置height后，如果height高于内容，则内容会垂直居中（每行的高度变高），这通常意味着导致样式异常了
+-->
+
+</body>
+</html>

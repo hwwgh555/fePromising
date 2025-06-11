@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>表格首列固定示例</title>
+  <style>
+    .table-container {
+      width: 600px;
+      height: 300px;
+      overflow: auto;
+      border: 1px solid #ccc;
+    }
+    table {
+      min-width: 800px; /* 让表格可以横向滚动 */
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+      background: #fff;
+      min-width: 120px;
+    }
+    thead th {
+      position: sticky;
+      top: 0;
+      background: #f5f5f5;
+      z-index: 2;
+    }
+    /* 首列固定 */
+    th:first-child, td:first-child {
+      position: sticky;
+      left: 0;
+      background: #e6f7ff;
+      z-index: 3;
+    }
+    /* 解决表头和首列交叉处的z-index问题 */
+    thead th:first-child {
+      z-index: 4;
+    }
+  </style>
+</head>
+<body>
+  <h2>首列固定，表体和表头可横向滚动</h2>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>序号</th>
+          <th>姓名</th>
+          <th>年龄</th>
+          <th>城市</th>
+          <th>部门</th>
+          <th>职位</th>
+          <th>邮箱</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>张三</td><td>28</td><td>北京</td><td>技术部</td><td>前端工程师</td><td>zhangsan@example.com</td></tr>
+        <tr><td>2</td><td>李四</td><td>32</td><td>上海</td><td>产品部</td><td>产品经理</td><td>lisi@example.com</td></tr>
+        <tr><td>3</td><td>王五</td><td>25</td><td>广州</td><td>设计部</td><td>UI设计师</td><td>wangwu@example.com</td></tr>
+        <tr><td>4</td><td>赵六</td><td>30</td><td>深圳</td><td>技术部</td><td>后端工程师</td><td>zhaoliu@example.com</td></tr>
+        <tr><td>5</td><td>钱七</td><td>27</td><td>杭州</td><td>市场部</td><td>市场专员</td><td>qianqi@example.com</td></tr>
+        <tr><td>6</td><td>孙八</td><td>29</td><td>南京</td><td>技术部</td><td>测试工程师</td><td>sunba@example.com</td></tr>
+        <tr><td>7</td><td>周九</td><td>31</td><td>成都</td><td>人事部</td><td>HR</td><td>zhoujiu@example.com</td></tr>
+        <tr><td>8</td><td>吴十</td><td>26</td><td>重庆</td><td>财务部</td><td>会计</td><td>wushi@example.com</td></tr>
+        <tr><td>9</td><td>郑十一</td><td>33</td><td>西安</td><td>技术部</td><td>架构师</td><td>zhengshiyi@example.com</td></tr>
+        <tr><td>10</td><td>冯十二</td><td>24</td><td>苏州</td><td>设计部</td><td>视觉设计师</td><td>fengshier@example.com</td></tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
+
+<!--
+表格首列固定的示例已经帮你实现，具体效果如下：
+
+- 表格外层有固定宽高和滚动条，支持横向和纵向滚动。
+- 首列（序号列）始终固定在左侧，无论怎么滚动都不会被遮挡。
+- 表头依然固定在顶部，和首列交叉处层级正确。
+
+核心CSS实现：
+- `.table-container` 设置 `overflow: auto`，让表格可滚动。
+- `th:first-child, td:first-child` 设置 `position: sticky; left: 0;`，实现首列固定。
+- `thead th` 设置 `position: sticky; top: 0;`，实现表头固定。
+- 通过 `z-index` 解决表头和首列交叉处的遮挡问题。
+-->

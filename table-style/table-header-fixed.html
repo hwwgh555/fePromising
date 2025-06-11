@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>表头固定示例</title>
+  <style>
+    .table-container {
+      width: 600px;
+      height: 300px;
+      overflow: auto;
+      border: 1px solid #ccc;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+      background: #fff;
+    }
+    thead th {
+      position: sticky;
+      top: 0;
+      background: #f5f5f5;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+  <h2>表头固定，表体可滚动</h2>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>序号</th>
+          <th>姓名</th>
+          <th>年龄</th>
+          <th>城市</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>张三</td><td>28</td><td>北京</td></tr>
+        <tr><td>2</td><td>李四</td><td>32</td><td>上海</td></tr>
+        <tr><td>3</td><td>王五</td><td>25</td><td>广州</td></tr>
+        <tr><td>4</td><td>赵六</td><td>30</td><td>深圳</td></tr>
+        <tr><td>5</td><td>钱七</td><td>27</td><td>杭州</td></tr>
+        <tr><td>6</td><td>孙八</td><td>29</td><td>南京</td></tr>
+        <tr><td>7</td><td>周九</td><td>31</td><td>成都</td></tr>
+        <tr><td>8</td><td>吴十</td><td>26</td><td>重庆</td></tr>
+        <tr><td>9</td><td>郑十一</td><td>33</td><td>西安</td></tr>
+        <tr><td>10</td><td>冯十二</td><td>24</td><td>苏州</td></tr>
+        <tr><td>11</td><td>陈十三</td><td>35</td><td>天津</td></tr>
+        <tr><td>12</td><td>褚十四</td><td>29</td><td>武汉</td></tr>
+        <tr><td>13</td><td>卫十五</td><td>28</td><td>长沙</td></tr>
+        <tr><td>14</td><td>蒋十六</td><td>27</td><td>青岛</td></tr>
+        <tr><td>15</td><td>沈十七</td><td>30</td><td>大连</td></tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
+
+<!--
+表头固定的表格示例已经帮你写好在 `table-header-fixed.html` 文件中。  
+你可以直接打开该文件查看效果：表头会始终固定在顶部，表体内容可以滚动。
+
+核心实现思路：
+- 外层用一个固定高度、`overflow: auto` 的容器包裹表格。
+- 表头（`thead th`）使用 `position: sticky; top: 0;`，即可实现表头固定。
+
+关键点：借助css的position: sticky实现表头固定，表体内容可以滚的
+
+我的认识错误点：直觉地以为要以table为容器，设置height;事实上，需要在table外层（添加1个div）设置height =>（table整体滚动 + position:sticky;设置实现表头固定）
+-->

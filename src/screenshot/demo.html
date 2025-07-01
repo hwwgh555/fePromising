@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>html2canvas 截图演示</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        .demo-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 2px dashed #e0e0e0;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+
+        .demo-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .chart-demo {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .table-demo {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .table-demo th,
+        .table-demo td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .table-demo th {
+            background: #667eea;
+            color: white;
+        }
+
+        .table-demo tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            color: #2e7d32;
+        }
+
+        .error {
+            background: #ffeaea;
+            border-color: #f44336;
+            color: #c62828;
+        }
+
+        .loading {
+            background: #fff3e0;
+            border-color: #ff9800;
+            color: #ef6c00;
+        }
+
+        #target-element {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🖼️ html2canvas 截图演示</h1>
+        
+        <div class="demo-section">
+            <h2>📱 基础功能演示</h2>
+            <div class="buttons">
+                <button onclick="captureFullPageDemo()">截取整个页面</button>
+                <button onclick="captureElementDemo()">截取指定元素</button>
+                <button onclick="highQualityDemo()">高质量截图</button>
+                <button onclick="jpegFormatDemo()">JPEG 格式截图</button>
+            </div>
+            <div id="status" class="status" style="display: none;"></div>
+        </div>
+
+        <div class="demo-section">
+            <h2>🎯 目标元素（用于演示元素截图）</h2>
+            <div id="target-element">
+                <h3>这是一个目标元素</h3>
+                <p>点击上面的"截取指定元素"按钮来截取这个区域</p>
+                <div class="chart-demo">
+                    模拟图表内容
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>📊 数据表格演示</h2>
+            <div class="demo-content">
+                <table class="table-demo">
+                    <thead>
+                        <tr>
+                            <th>产品名称</th>
+                            <th>价格</th>
+                            <th>库存</th>
+                            <th>状态</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>笔记本电脑</td>
+                            <td>¥5,999</td>
+                            <td>25</td>
+                            <td>✅ 有货</td>
+                        </tr>
+                        <tr>
+                            <td>无线鼠标</td>
+                            <td>¥199</td>
+                            <td>150</td>
+                            <td>✅ 有货</td>
+                        </tr>
+                        <tr>
+                            <td>机械键盘</td>
+                            <td>¥399</td>
+                            <td>0</td>
+                            <td>❌ 缺货</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button onclick="captureTableDemo()">截取表格</button>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>🎨 自定义配置演示</h2>
+            <div class="buttons">
+                <button onclick="customBackgroundDemo()">自定义背景色</button>
+                <button onclick="scaledDemo()">缩放截图</button>
+                <button onclick="transparentDemo()">透明背景</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // 导入截图功能（需要构建工具支持）
+        // import screenshot, { screenshotUtils, captureElement, captureFullPage, downloadImage } from './index.ts';
+        
+        // 为了演示，我们直接在这里重新实现基本功能
+        // 在实际项目中，你应该从 index.ts 导入
+        
+        async function loadHtml2Canvas() {
+            // 动态加载 html2canvas
+            if (typeof html2canvas === 'undefined') {
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
+                document.head.appendChild(script);
+                await new Promise(resolve => script.onload = resolve);
+            }
+        }
+
+        function showStatus(message, type = 'success') {
+            const status = document.getElementById('status');
+            status.style.display = 'block';
+            status.className = `status ${type}`;
+            status.textContent = message;
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    status.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        function downloadCanvas(canvas, filename, format = 'png', quality = 1) {
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL(`image/${format}`, quality);
+            link.download = `${filename}.${format}`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // 全局函数供按钮调用
+        window.captureFullPageDemo = async function() {
+            try {
+                showStatus('正在截取整个页面...', 'loading');
+                await loadHtml2Canvas();
+                
+                const canvas = await html2canvas(document.body, {
+                    backgroundColor: '#ffffff',
+                    useCORS: true,
+                    scale: 1
+                });
+                
+                downloadCanvas(canvas, 'fullpage-screenshot');
+                showStatus('✅ 整个页面截图已下载！');
+            } catch (error) {
+                showStatus(`❌ 截图失败: ${error.message}`, 'error');
+            }
+        };
+
+        window.captureElementDemo = async function() {
+            try {
+                showStatus('正在截取目标元素...', 'loading');
+                await loadHtml2Canvas();
+                
+                const element = document.getElementById('target-element');
+                const canvas = await html2canvas(element, {
+                    backgroundColor: '#ffffff',
+                    useCORS: true
+                });
+                
+                downloadCanvas(canvas, 'element-screenshot');
+                showStatus('✅ 元素截图已下载！');
+            } catch (error) {
+                showStatus(`❌ 截图失败: ${error.message}`, 'error');
+            }
+        };
+
+        window.highQualityDemo = async function() {
+            try {
+                showStatus('正在生成高质量截图...', 'loading');
+                await loadHtml2Canvas();
+                
+                // const element = document.getElementById('target-element');
+                const canvas = await html2canvas(document.body, {
+                    backgroundColor: '#ffffff',
+                    scale: 2, // 2倍缩放提高质量
+                    useCORS: true
+                });
+                
+                downloadCanvas(canvas, 'high-quality-screenshot');
+                showStatus('✅ 高质量截图已下载！');
+            } catch (error) {
+                showStatus(`❌ 截图失败: ${error.message}`, 'error');
+            }
+        };
+
+        window.jpegFormatDemo = async function() {
+            try {
+                showStatus('正在生成 JPEG 格式截图...', 'loading');
+                await loadHtml2Canvas();
+                
+                const element = document.getElementById('target-element');
+                const canvas = await html2canvas(element, {
+                    backgroundColor: '#ffffff',
+                    useCORS: true
+                });
+                
+                downloadCanvas(canvas, 'screenshot', 'jpeg', 0.9);
+                showStatus('✅ JPEG 格式截图已下载！');
+            } catch (error) {
+                showStatus(`❌ 截图失败: ${error.message}`, 'error');
+            }
+        };
+
+        window.captureTableDemo = async function() {
+            try {
+                showStatus('正在截取表格...', 'loading');
+                await loadHtml2Canvas();
+                
+                const table = document.querySelector('.table-demo');
+                const canvas = await html2canvas(table, {
+                    backgroundColor: '#ffffff',
+                    useCORS: true
+                });
+                
+                downloadCanvas(canvas, 'table-screenshot');
+                showStatus('✅ 表格截图已下载！');
+            } catch (error) {
+                showStatus(`❌ 截图失败: ${error.message}`, 'error');
+            }
+        };
+
+        window.customBackgroundDemo = async function() {
+            try {
+                showStatus('正在生成自定义背景截图...', 'loading');
+                await loadHtml2Canvas();
+                
+                const element = document.getElementById('target-element');
+                const canvas = await html2canvas(element, {
+                    backgroundColor: '#ff6b6b', // 自定义红色背景
+                    useCORS: true
+                });
+                
+                downloadCanvas(canvas, 'custom-background-screenshot');
+                showStatus('✅ 自定义背景截图已下载！');
+            } catch (error) {
+                showStatus(`❌ 截图失败: ${error.message}`, 'error');
+            }
+        };
+
+        window.scaledDemo = async function() {
+            try {
+                showStatus('正在生成缩放截图...', 'loading');
+                await loadHtml2Canvas();
+                
+                const element = document.getElementById('target-element');
+                const canvas = await html2canvas(element, {
+                    backgroundColor: '#ffffff',
+                    scale: 0.5, // 0.5倍缩放
+                    useCORS: true
+                });
+                
+                downloadCanvas(canvas, 'scaled-screenshot');
+                showStatus('✅ 缩放截图已下载！');
+            } catch (error) {
+                showStatus(`❌ 截图失败: ${error.message}`, 'error');
+            }
+        };
+
+        window.transparentDemo = async function() {
+            try {
+                showStatus('正在生成透明背景截图...', 'loading');
+                await loadHtml2Canvas();
+                
+                const element = document.getElementById('target-element');
+                const canvas = await html2canvas(element, {
+                    backgroundColor: null, // 透明背景
+                    useCORS: true
+                });
+                
+                downloadCanvas(canvas, 'transparent-screenshot');
+                showStatus('✅ 透明背景截图已下载！');
+            } catch (error) {
+                showStatus(`❌ 截图失败: ${error.message}`, 'error');
+            }
+        };
+    </script>
+</body>
+</html> 

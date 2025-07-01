@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>浏览器原生截图能力示例</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .method-section {
+            margin-bottom: 50px;
+            padding: 25px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            background: #f9f9f9;
+        }
+
+        .method-section h2 {
+            color: #555;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .demo-content {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .screenshot-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .screenshot-item {
+            flex: 1;
+            min-width: 300px;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            background: #fafafa;
+        }
+
+        .screenshot-item img, .screenshot-item video {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        video {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        canvas {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid #667eea;
+        }
+
+        .feature-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🖼️ 浏览器原生截图能力示例</h1>
+        
+        <div class="demo-content" id="demo-content">
+            <h3>🎨 这是一个演示内容区域</h3>
+            <p>当前时间: <span id="current-time"></span></p>
+            <p>这个区域包含渐变背景、文字和动态内容</p>
+            <div style="margin-top: 20px;">
+                <span style="background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 20px;">
+                    ✨ 美丽的UI元素 ✨
+                </span>
+            </div>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>📺 屏幕捕获</h3>
+                <p>使用 getDisplayMedia API 捕获整个屏幕、窗口或标签页</p>
+            </div>
+            <div class="feature-card">
+                <h3>🎨 Canvas 绘制</h3>
+                <p>将HTML元素绘制到Canvas上，然后导出为图片</p>
+            </div>
+            <div class="feature-card">
+                <h3>📐 SVG 转换</h3>
+                <p>使用SVG foreignObject将HTML转换为图片</p>
+            </div>
+        </div>
+
+        <!-- 方法1: Screen Capture API -->
+        <div class="method-section">
+            <h2>🖥️ 方法1: Screen Capture API (getDisplayMedia)</h2>
+            <p>这是最直接的截图方式，可以捕获屏幕、应用窗口或浏览器标签页。</p>
+            
+            <div class="note">
+                <strong>注意:</strong> 此方法需要用户手动选择要捕获的内容，适合捕获整个屏幕或窗口。
+            </div>
+            
+            <button class="btn" onclick="captureScreen()">📸 开始屏幕捕获</button>
+            <button class="btn" onclick="stopCapture()" style="background: #e74c3c;">⏹️ 停止捕获</button>
+            
+            <div class="screenshot-container">
+                <div class="screenshot-item">
+                    <h4>实时预览</h4>
+                    <video id="preview-video" autoplay muted style="display: none;"></video>
+                    <div id="screen-status" class="status info">点击"开始屏幕捕获"按钮开始</div>
+                </div>
+                <div class="screenshot-item">
+                    <h4>截图结果</h4>
+                    <img id="screen-screenshot" style="display: none;" alt="屏幕截图">
+                    <div id="screen-result-status" class="status info">等待截图...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 方法2: Canvas API -->
+        <div class="method-section">
+            <h2>🎨 方法2: Canvas API (HTML to Canvas)</h2>
+            <p>将HTML元素内容绘制到Canvas上，然后导出为图片。</p>
+            
+            <div class="note">
+                <strong>注意:</strong> 此方法适合捕获特定的HTML元素，但有一些限制（如跨域图片、某些CSS样式等）。
+            </div>
+            
+            <button class="btn" onclick="captureElementToCanvas()">🖼️ 捕获演示区域</button>
+            
+            <div class="screenshot-container">
+                <div class="screenshot-item">
+                    <h4>Canvas 画布</h4>
+                    <canvas id="capture-canvas" style="display: none;"></canvas>
+                    <div id="canvas-status" class="status info">点击"捕获演示区域"开始</div>
+                </div>
+                <div class="screenshot-item">
+                    <h4>导出图片</h4>
+                    <img id="canvas-screenshot" style="display: none;" alt="Canvas截图">
+                    <div id="canvas-result-status" class="status info">等待生成...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 方法3: SVG + foreignObject -->
+        <div class="method-section">
+            <h2>📐 方法3: SVG + foreignObject</h2>
+            <p>将HTML内容嵌入到SVG中，然后转换为图片。</p>
+            
+            <div class="note">
+                <strong>注意:</strong> 此方法可以保持较好的图片质量，但同样有跨域和CSS限制。
+            </div>
+            
+            <button class="btn" onclick="captureUsingSVG()">🔄 SVG 转换截图</button>
+            
+            <div class="screenshot-container">
+                <div class="screenshot-item">
+                    <h4>SVG 内容</h4>
+                    <div id="svg-content" style="font-size: 12px; max-height: 200px; overflow: auto;"></div>
+                    <div id="svg-status" class="status info">点击"SVG 转换截图"开始</div>
+                </div>
+                <div class="screenshot-item">
+                    <h4>SVG 截图</h4>
+                    <img id="svg-screenshot" style="display: none;" alt="SVG截图">
+                    <div id="svg-result-status" class="status info">等待转换...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 下载功能 -->
+        <div class="method-section">
+            <h2>💾 下载截图</h2>
+            <p>生成的截图可以直接下载到本地。</p>
+            
+            <button class="btn" onclick="downloadAllScreenshots()" style="background: #27ae60;">📥 下载所有截图</button>
+            
+            <div id="download-status" class="status info">生成截图后可以下载</div>
+        </div>
+    </div>
+
+    <script>
+        let mediaStream = null;
+        let screenshots = {};
+
+        // 更新当前时间
+        function updateTime() {
+            document.getElementById('current-time').textContent = new Date().toLocaleString('zh-CN');
+        }
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        // 方法1: Screen Capture API
+        async function captureScreen() {
+            try {
+                const statusEl = document.getElementById('screen-status');
+                const videoEl = document.getElementById('preview-video');
+                
+                statusEl.textContent = '正在请求屏幕访问权限...';
+                statusEl.className = 'status info';
+
+                mediaStream = await navigator.mediaDevices.getDisplayMedia({
+                    video: {
+                        width: { ideal: 1920 },
+                        height: { ideal: 1080 }
+                    },
+                    audio: false
+                });
+
+                videoEl.srcObject = mediaStream;
+                videoEl.style.display = 'block';
+                
+                statusEl.textContent = '✅ 屏幕捕获成功！正在录制...';
+                statusEl.className = 'status success';
+
+                // 监听流结束事件
+                mediaStream.getVideoTracks()[0].addEventListener('ended', () => {
+                    stopCapture();
+                });
+
+                // 自动截图
+                setTimeout(() => {
+                    takeScreenshot();
+                }, 2000);
+
+            } catch (err) {
+                console.error('屏幕捕获失败:', err);
+                const statusEl = document.getElementById('screen-status');
+                statusEl.textContent = `❌ 屏幕捕获失败: ${err.message}`;
+                statusEl.className = 'status error';
+            }
+        }
+
+        function stopCapture() {
+            if (mediaStream) {
+                mediaStream.getTracks().forEach(track => track.stop());
+                mediaStream = null;
+                
+                const videoEl = document.getElementById('preview-video');
+                videoEl.style.display = 'none';
+                
+                const statusEl = document.getElementById('screen-status');
+                statusEl.textContent = '⏹️ 屏幕捕获已停止';
+                statusEl.className = 'status info';
+            }
+        }
+
+        function takeScreenshot() {
+            if (!mediaStream) return;
+
+            const videoEl = document.getElementById('preview-video');
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            canvas.width = videoEl.videoWidth;
+            canvas.height = videoEl.videoHeight;
+
+            ctx.drawImage(videoEl, 0, 0);
+
+            const screenshotEl = document.getElementById('screen-screenshot');
+            screenshots.screen = canvas.toDataURL('image/png');
+            screenshotEl.src = screenshots.screen;
+            screenshotEl.style.display = 'block';
+
+            const statusEl = document.getElementById('screen-result-status');
+            statusEl.textContent = '✅ 屏幕截图生成成功！';
+            statusEl.className = 'status success';
+        }
+
+        // 方法2: Canvas API
+        function captureElementToCanvas() {
+            const statusEl = document.getElementById('canvas-status');
+            const canvasEl = document.getElementById('capture-canvas');
+            const resultStatusEl = document.getElementById('canvas-result-status');
+            
+            try {
+                statusEl.textContent = '正在生成Canvas截图...';
+                statusEl.className = 'status info';
+
+                const targetElement = document.getElementById('demo-content');
+                const rect = targetElement.getBoundingClientRect();
+                
+                canvasEl.width = rect.width;
+                canvasEl.height = rect.height;
+                canvasEl.style.display = 'block';
+                
+                const ctx = canvasEl.getContext('2d');
+                
+                // 绘制背景渐变
+                const gradient = ctx.createLinearGradient(0, 0, rect.width, rect.height);
+                gradient.addColorStop(0, '#ff6b6b');
+                gradient.addColorStop(1, '#4ecdc4');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, rect.width, rect.height);
+                
+                // 添加圆角
+                ctx.globalCompositeOperation = 'destination-in';
+                ctx.beginPath();
+                ctx.roundRect(0, 0, rect.width, rect.height, 10);
+                ctx.fill();
+                ctx.globalCompositeOperation = 'source-over';
+                
+                // 添加文字
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 20px Microsoft YaHei';
+                ctx.textAlign = 'center';
+                ctx.fillText('🎨 这是一个演示内容区域', rect.width/2, 50);
+                
+                ctx.font = '16px Microsoft YaHei';
+                ctx.fillText(`当前时间: ${new Date().toLocaleString('zh-CN')}`, rect.width/2, 80);
+                ctx.fillText('这个区域包含渐变背景、文字和动态内容', rect.width/2, 110);
+                
+                // 添加装饰元素
+                ctx.fillStyle = 'rgba(255,255,255,0.2)';
+                ctx.beginPath();
+                ctx.roundRect(rect.width/2 - 80, 130, 160, 40, 20);
+                ctx.fill();
+                
+                ctx.fillStyle = 'white';
+                ctx.font = '14px Microsoft YaHei';
+                ctx.fillText('✨ 美丽的UI元素 ✨', rect.width/2, 155);
+
+                // 导出截图
+                screenshots.canvas = canvasEl.toDataURL('image/png');
+                const screenshotEl = document.getElementById('canvas-screenshot');
+                screenshotEl.src = screenshots.canvas;
+                screenshotEl.style.display = 'block';
+
+                statusEl.textContent = '✅ Canvas绘制完成！';
+                statusEl.className = 'status success';
+                
+                resultStatusEl.textContent = '✅ Canvas截图生成成功！';
+                resultStatusEl.className = 'status success';
+
+            } catch (err) {
+                console.error('Canvas截图失败:', err);
+                statusEl.textContent = `❌ Canvas截图失败: ${err.message}`;
+                statusEl.className = 'status error';
+                
+                resultStatusEl.textContent = `❌ 生成失败: ${err.message}`;
+                resultStatusEl.className = 'status error';
+            }
+        }
+
+        // 方法3: SVG + foreignObject
+        function captureUsingSVG() {
+            const statusEl = document.getElementById('svg-status');
+            const contentEl = document.getElementById('svg-content');
+            const resultStatusEl = document.getElementById('svg-result-status');
+            
+            try {
+                statusEl.textContent = '正在生成SVG截图...';
+                statusEl.className = 'status info';
+
+                const targetElement = document.getElementById('demo-content');
+                const rect = targetElement.getBoundingClientRect();
+                const computedStyle = window.getComputedStyle(targetElement);
+                
+                // 创建SVG字符串
+                const svgString = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="${rect.width}" height="${rect.height}">
+                        <defs>
+                            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ff6b6b;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#4ecdc4;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <rect width="100%" height="100%" fill="url(#grad1)" rx="10" ry="10"/>
+                        <text x="50%" y="50" dominant-baseline="middle" text-anchor="middle" fill="white" font-family="Microsoft YaHei" font-size="20" font-weight="bold">🎨 这是一个演示内容区域</text>
+                        <text x="50%" y="80" dominant-baseline="middle" text-anchor="middle" fill="white" font-family="Microsoft YaHei" font-size="16">当前时间: ${new Date().toLocaleString('zh-CN')}</text>
+                        <text x="50%" y="110" dominant-baseline="middle" text-anchor="middle" fill="white" font-family="Microsoft YaHei" font-size="16">这个区域包含渐变背景、文字和动态内容</text>
+                        <rect x="${rect.width/2 - 80}" y="130" width="160" height="40" fill="rgba(255,255,255,0.2)" rx="20" ry="20"/>
+                        <text x="50%" y="155" dominant-baseline="middle" text-anchor="middle" fill="white" font-family="Microsoft YaHei" font-size="14">✨ 美丽的UI元素 ✨</text>
+                    </svg>
+                `;
+
+                contentEl.innerHTML = `<pre>${svgString.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>`;
+                
+                // 创建图片
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const img = new Image();
+                
+                img.onload = function() {
+                    canvas.width = rect.width;
+                    canvas.height = rect.height;
+                    ctx.drawImage(img, 0, 0);
+                    
+                    screenshots.svg = canvas.toDataURL('image/png');
+                    const screenshotEl = document.getElementById('svg-screenshot');
+                    screenshotEl.src = screenshots.svg;
+                    screenshotEl.style.display = 'block';
+                    
+                    resultStatusEl.textContent = '✅ SVG截图生成成功！';
+                    resultStatusEl.className = 'status success';
+                };
+                
+                img.onerror = function(err) {
+                    console.error('SVG转换失败:', err);
+                    resultStatusEl.textContent = '❌ SVG转换失败';
+                    resultStatusEl.className = 'status error';
+                };
+                
+                const svgBlob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
+                const url = URL.createObjectURL(svgBlob);
+                img.src = url;
+                
+                statusEl.textContent = '✅ SVG内容生成完成！';
+                statusEl.className = 'status success';
+
+            } catch (err) {
+                console.error('SVG截图失败:', err);
+                statusEl.textContent = `❌ SVG截图失败: ${err.message}`;
+                statusEl.className = 'status error';
+                
+                resultStatusEl.textContent = `❌ 生成失败: ${err.message}`;
+                resultStatusEl.className = 'status error';
+            }
+        }
+
+        // 下载截图
+        function downloadAllScreenshots() {
+            const statusEl = document.getElementById('download-status');
+            let downloadCount = 0;
+            
+            Object.entries(screenshots).forEach(([type, dataUrl], index) => {
+                setTimeout(() => {
+                    const link = document.createElement('a');
+                    link.download = `screenshot-${type}-${Date.now()}.png`;
+                    link.href = dataUrl;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    downloadCount++;
+                    statusEl.textContent = `✅ 已下载 ${downloadCount} 张截图`;
+                    statusEl.className = 'status success';
+                }, index * 500);
+            });
+            
+            if (Object.keys(screenshots).length === 0) {
+                statusEl.textContent = '❌ 没有可下载的截图，请先生成截图';
+                statusEl.className = 'status error';
+            }
+        }
+
+        // 检测浏览器支持
+        function checkBrowserSupport() {
+            const features = [
+                {
+                    name: 'Screen Capture API',
+                    supported: 'getDisplayMedia' in navigator.mediaDevices,
+                    element: 'screen-status'
+                },
+                {
+                    name: 'Canvas API',
+                    supported: 'getContext' in document.createElement('canvas'),
+                    element: 'canvas-status'
+                },
+                {
+                    name: 'SVG Support',
+                    supported: 'createElementNS' in document,
+                    element: 'svg-status'
+                }
+            ];
+
+            features.forEach(feature => {
+                if (!feature.supported) {
+                    const el = document.getElementById(feature.element);
+                    if (el) {
+                        el.textContent = `❌ 浏览器不支持 ${feature.name}`;
+                        el.className = 'status error';
+                    }
+                }
+            });
+        }
+
+        // 页面加载完成后检测支持
+        document.addEventListener('DOMContentLoaded', checkBrowserSupport);
+    </script>
+</body>
+</html> 
